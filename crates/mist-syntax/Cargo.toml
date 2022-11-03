@@ -1,0 +1,18 @@
+[package]
+name = "mist-syntax"
+version = "0.1.0"
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+miette.workspace = true
+mist-tokens.workspace = true
+num.workspace = true
+once_cell.workspace = true
+rowan.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+pretty_assertions.workspace = true
+rstest.workspace = true
