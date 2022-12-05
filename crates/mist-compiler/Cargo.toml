@@ -1,0 +1,17 @@
+[package]
+name = "mist-compiler"
+version = "0.0.1"
+authors.workspace = true
+edition.workspace = true
+repository.workspace = true
+include = ["compiler"]
+
+[dependencies.ocaml]
+git = "https://github.com/zshipko/ocaml-rs"
+
+[build-dependencies.ocaml-build]
+git = "https://github.com/zshipko/ocaml-rs"
+features = ["dune"]
+
+[dev-dependencies]
+rstest.workspace = true

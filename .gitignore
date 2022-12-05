@@ -1,2 +1,5 @@
+/_build
 /target
-/Cargo.lock
+
+# menhir's --explain flag is helpful but outputs .conflicts files
+*.conflicts
