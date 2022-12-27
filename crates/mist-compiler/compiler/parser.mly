@@ -8,7 +8,6 @@
 %token KW_IF "if"
 %token KW_LET "let"
 %token KW_TRUE "true"
-%token <bool> BOOL
 %token <Ast.float_lit> FLOAT
 %token <Ast.int_lit> INT
 %token <string> IDENT
