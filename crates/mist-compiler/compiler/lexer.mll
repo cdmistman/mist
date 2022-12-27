@@ -2,7 +2,7 @@
 	open Lexing
 	open Parser
 
-	exception SyntaxError of string
+	exception LexError of string
 
 	let string_of_char = String.make 1
 }
@@ -19,6 +19,8 @@ rule read =
 	parse
 	| whitespace { read lexbuf }
 	| newline { Lexing.new_line lexbuf; read lexbuf }
+	| "\\\\" { read_line_comment lexbuf }
+	| "\\*" { read_block_comment 0 lexbuf }
 	| '{' { L_CURLY }
 	| '}' { R_CURLY }
 	| '(' { L_PAREN }
@@ -35,7 +37,7 @@ rule read =
 	| digit+ { INT @@ int_of_string (Lexing.lexeme lexbuf) }
 	| '"' { read_string (Lexing.lexeme_start lexbuf) (Buffer.create 8) lexbuf }
 	| eof { EOF }
-	| _ as ch { raise @@ SyntaxError ("unexpected character `" ^ string_of_char ch ^ "`") }
+	| _ as ch { raise @@ LexError ("unexpected character `" ^ string_of_char ch ^ "`") }
 
 and read_string start_p buf =
 	parse
@@ -47,9 +49,9 @@ and read_string start_p buf =
 	}
 	| eof {
 		let end_p = lexbuf.lex_curr_pos in
-		raise @@ SyntaxError "unclosed string"
+		raise @@ LexError "unclosed string"
 	}
-	| _ as ch { raise @@ SyntaxError ("unhandled string char `" ^ string_of_char ch ^ "`") }
+	| _ as ch { raise @@ LexError ("unhandled string char `" ^ string_of_char ch ^ "`") }
 
 and read_char_escape start_p buf =
 	parse
@@ -58,4 +60,18 @@ and read_char_escape start_p buf =
 	| 't' { Buffer.add_char buf '\t'; read_string start_p buf lexbuf }
 	| '\\' { Buffer.add_char buf '\\'; read_string start_p buf lexbuf }
 	| '"' { Buffer.add_char buf '"'; read_string start_p buf lexbuf }
-	| _ as ch { raise @@ SyntaxError "unhandled string escape sequence" }
+	| _ as ch { raise @@ LexError ("unhandled string escape sequence `\\" ^ string_of_char ch ^ "`") }
+
+and read_block_comment depth =
+	parse
+	| '\n' { Lexing.new_line lexbuf; read_block_comment lexbuf }
+	| "\\*" { read_block_comment (depth + 1) lexbuf }
+	| "*\\" { if depth = 0 then read lexbuf else read_block_comment (depth - 1) lexbuf }
+	| _ { read_block_comment depth lexbuf }
+	| eof { raise @@ LexError "unclosed block comment" }
+
+and read_line_comment =
+	parse
+	| '\n' { Lexing.new_line lexbuf; read lexbuf }
+	| _ { read_line_comment lexbuf }
+	| eof { EOF }
