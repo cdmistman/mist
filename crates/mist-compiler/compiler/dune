@@ -8,4 +8,4 @@
  (name mist_compiler)
  (public_name mist-compiler)
  (modes exe object)
- (libraries bignum core))
+ (libraries base zarith))

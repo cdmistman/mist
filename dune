@@ -1,1 +1,2 @@
-(dirs (:standard \ target))
+(dirs
+ (:standard \ target))
