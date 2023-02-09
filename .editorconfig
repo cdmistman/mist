@@ -8,12 +8,3 @@ indent_style = tab
 insert_final_newline = true
 tab_width = 2
 trim_trailing_whitespace = true
-
-[{dune,dune-project}]
-# dune files use 1-space indentation
-indent_size = 1
-indent_style = space
-
-[*.{ml,mli}]
-# ocamlformat enforces space indentation without an option to use tabs
-indent_style = space

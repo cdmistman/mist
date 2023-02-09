@@ -1,6 +1,0 @@
-profile = default
-version = 0.24.1
-let-and = sparse
-let-binding-spacing = sparse
-module-item-spacing = sparse
-type-decl = sparse

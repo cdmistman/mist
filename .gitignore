@@ -1,6 +1,2 @@
 /.direnv
-/_build
 /target
-
-# menhir's --explain flag is helpful but outputs .conflicts files
-*.conflicts
