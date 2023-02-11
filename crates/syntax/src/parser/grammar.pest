@@ -1,0 +1,77 @@
+// TODO: block comments
+COMMENT = { "//" ~ (!whitespace_eol ~ ANY) ~ whitespace_eol }
+
+WHITESPACE = { " " | "\t" | whitespace_eol }
+whitespace_eol = { "\n" | "\r\n" }
+
+b_curly_l = { "{" }
+b_curly_r = { "}" }
+b_paren_l = { "(" }
+b_paren_r = { ")" }
+b_square_l = { "[" }
+b_square_r = { "]" }
+
+block = { b_curly_l ~ statements ~ b_curly_r }
+
+expression = { expression_with_block | expression_without_block }
+expression_group = { b_paren_l ~ expression? ~ b_paren_r }
+expression_with_block = { block | if_expression }
+expression_without_block = {
+	(expression_group | identifier | literal)+
+}
+
+identifier = @{ !kw ~ "_"* ~ XID_START ~ XID_CONTINUE* }
+
+if_expression = { kw_if ~ expression ~ block ~ if_expression_else? }
+if_expression_else = ${
+	kw_else ~ WHITESPACE* ~ (if_expression | block)
+}
+
+kw = _{ kw_else | kw_false | kw_if | kw_let | kw_true }
+kw_else = { "else" }
+kw_false = { "false" }
+kw_if = { "if" }
+kw_let = { "let" }
+kw_true = { "true" }
+
+literal = { kw_false | kw_true | literal_integer }
+literal_integer = { ASCII_DIGIT ~ (ASCII_DIGIT | "_")* }
+
+statements = {
+	| (
+			expression_without_block
+			~ (((block ~ sym_semicolon?) | sym_semicolon) ~ statements)?
+		)
+	| (expression_with_block ~ sym_semicolon? ~ statements?)
+}
+
+sym_semicolon = { ";" }
+
+// pattern = {
+// 	| underscore
+// 	| (identifier ~ (":" ~ type_reference)?)
+// }
+
+// statement = {
+// 	| ("let" ~ pattern ~ "=" ~ expression ~ ";")
+// 	| expression
+// 	// TODO: support elided semicolons when there's a block
+// }
+
+// type_reference = { "bool" | "int" | identifier }
+
+// underscore = { "_"+ }
+
+// function_definition = {
+// 	kw_fun ~ identifier
+// 	~ function_parameter* ~ sym_arrow ~ type_reference
+// 	~ (block | function_definition_expression)
+// }
+// function_definition_expression = { "=" ~ expression ~ ";" }
+// function_parameter = {
+// 	| "()"
+// 	| ("(" ~ pattern ~ ")")
+// 	| identifier
+// }
+
+
