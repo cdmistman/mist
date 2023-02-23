@@ -22,9 +22,10 @@ expression_without_block = {
 
 identifier = @{ !kw ~ "_"* ~ XID_START ~ XID_CONTINUE* }
 
-if_expression = { kw_if ~ expression ~ block ~ if_expression_else? }
-if_expression_else = ${
-	kw_else ~ WHITESPACE* ~ (if_expression | block)
+if_expression = { kw_if ~ expression ~ block ~ (kw_else ~ else_clause)? }
+else_clause = {
+	| if_expression
+	| block
 }
 
 kw = _{ kw_else | kw_false | kw_if | kw_let | kw_true }
