@@ -31,7 +31,10 @@ fn if_expression() {
 			])
 		]
 	};
+}
 
+#[test]
+fn if_else_expression() {
 	parses_to! {
 		parser: MistParser,
 		input: "if 0{1} else{2}",
@@ -76,7 +79,10 @@ fn if_expression() {
 			])
 		]
 	};
+}
 
+#[test]
+fn chained_if_expression() {
 	parses_to! {
 		parser: MistParser,
 		input: "if 0{1} else if 2{3}",
