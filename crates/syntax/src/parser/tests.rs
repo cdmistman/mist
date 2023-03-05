@@ -1,5 +1,11 @@
+mod blocks;
+mod expression_groups;
+mod expression_lists;
+mod expressions_with_block;
 mod if_expressions;
+mod invocations;
 mod literals;
+mod statements;
 
 mod test_prelude {
 	pub use pest::*;
