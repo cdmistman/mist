@@ -14,3 +14,5 @@ rstest = "0.16.0"
 thiserror = "1.0.37"
 
 mist-bytecode = { path = "crates/bytecode" }
+mist-syntax.path = "crates/syntax"
+mist-types.path = "crates/types"

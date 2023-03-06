@@ -12,12 +12,22 @@ b_square_l = { "[" }
 b_square_r = { "]" }
 
 block = { b_curly_l ~ statements? ~ b_curly_r }
+binding = { identifier ~ (sym_colon ~ type_ref)? }
 
 call = { expression_list }
 
 expression_group = { b_paren_l ~ (invoke | expression_with_block)? ~ b_paren_r }
 expression_list = { (expression_group | identifier | literal)+ }
 expression_with_block = { block | if_expression }
+
+fn_def = { kw_fn ~ identifier ~ fn_param_list ~ fn_return_type? ~ block }
+fn_param_list = {
+	b_paren_l
+	// TODO: trailing comma
+	~ (binding ~ (sym_comma ~ binding)*)?
+	~ b_paren_r
+}
+fn_return_type = { sym_arrow ~ type_ref }
 
 identifier = @{ !kw ~ "_"* ~ XID_START ~ XID_CONTINUE* }
 
@@ -29,9 +39,10 @@ else_clause = {
 
 invoke = { expression_list ~ block? }
 
-kw = _{ kw_else | kw_false | kw_if | kw_let | kw_true }
+kw = _{ kw_else | kw_false | kw_fn | kw_if | kw_let | kw_true }
 kw_else = { "else" }
 kw_false = { "false" }
+kw_fn = { "fn" }
 kw_if = { "if" }
 kw_let = { "let" }
 kw_true = { "true" }
@@ -45,4 +56,10 @@ statements = {
 	| (expression_with_block ~ sym_semicolon?  ~ statements?)
 }
 
+sym_arrow = { "->" }
+sym_colon = { ":" }
+sym_comma = { "," }
 sym_semicolon = { ";" }
+
+type_ref_group = { b_paren_l ~ type_ref? ~ b_paren_r }
+type_ref = { identifier | type_ref_group }
