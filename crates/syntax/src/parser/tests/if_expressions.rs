@@ -20,10 +20,12 @@ fn if_expression() {
 				block(4, 7, [
 					b_curly_l(4, 5),
 					statements(5, 6, [
-						call(5, 6, [
-							expression_list(5, 6, [
-								literal(5, 6, [
-									literal_integer(5, 6)
+						statement_expression(5, 6, [
+							call(5, 6, [
+								expression_list(5, 6, [
+									literal(5, 6, [
+										literal_integer(5, 6)
+									])
 								])
 							])
 						])
@@ -55,10 +57,12 @@ fn if_else_expression() {
 				block(4, 7, [
 					b_curly_l(4, 5),
 					statements(5, 6, [
-						call(5, 6, [
-							expression_list(5, 6, [
-								literal(5, 6, [
-									literal_integer(5, 6)
+						statement_expression(5, 6, [
+							call(5, 6, [
+								expression_list(5, 6, [
+									literal(5, 6, [
+										literal_integer(5, 6)
+									])
 								])
 							])
 						])
@@ -71,10 +75,12 @@ fn if_else_expression() {
 					block(12, 15, [
 						b_curly_l(12, 13),
 						statements(13, 14, [
-							call(13, 14, [
-								expression_list(13, 14, [
-									literal(13, 14, [
-										literal_integer(13, 14)
+							statement_expression(13, 14, [
+								call(13, 14, [
+									expression_list(13, 14, [
+										literal(13, 14, [
+											literal_integer(13, 14)
+										])
 									])
 								])
 							])
@@ -107,10 +113,12 @@ fn chained_if_expression() {
 				block(4, 7, [
 					b_curly_l(4, 5),
 					statements(5, 6, [
-						call(5, 6, [
-							expression_list(5, 6, [
-								literal(5, 6, [
-									literal_integer(5, 6)
+						statement_expression(5, 6, [
+							call(5, 6, [
+								expression_list(5, 6, [
+									literal(5, 6, [
+										literal_integer(5, 6)
+									])
 								])
 							])
 						])
@@ -134,10 +142,12 @@ fn chained_if_expression() {
 						block(17, 20, [
 							b_curly_l(17, 18),
 							statements(18, 19, [
-								call(18, 19, [
-									expression_list(18, 19, [
-										literal(18, 19, [
-											literal_integer(18, 19)
+								statement_expression(18, 19, [
+									call(18, 19, [
+										expression_list(18, 19, [
+											literal(18, 19, [
+												literal_integer(18, 19)
+											])
 										])
 									])
 								])
@@ -149,7 +159,10 @@ fn chained_if_expression() {
 			])
 		]
 	};
+}
 
+#[test]
+fn chained_if_expression_with_else() {
 	parses_to! {
 		parser: MistParser,
 		input: "if 0{1} else if 2{3}else{4}",
@@ -168,10 +181,12 @@ fn chained_if_expression() {
 				block(4, 7, [
 					b_curly_l(4, 5),
 					statements(5, 6, [
-						call(5, 6, [
-							expression_list(5, 6, [
-								literal(5, 6, [
-									literal_integer(5, 6)
+						statement_expression(5, 6, [
+							call(5, 6, [
+								expression_list(5, 6, [
+									literal(5, 6, [
+										literal_integer(5, 6)
+									])
 								])
 							])
 						])
@@ -195,10 +210,12 @@ fn chained_if_expression() {
 						block(17, 20, [
 							b_curly_l(17, 18),
 							statements(18, 19, [
-								call(18, 19, [
-									expression_list(18, 19, [
-										literal(18, 19, [
-											literal_integer(18, 19)
+								statement_expression(18, 19, [
+									call(18, 19, [
+										expression_list(18, 19, [
+											literal(18, 19, [
+												literal_integer(18, 19)
+											])
 										])
 									])
 								])
@@ -210,10 +227,12 @@ fn chained_if_expression() {
 							block(24, 27, [
 								b_curly_l(24, 25),
 								statements(25, 26, [
-									call(25, 26, [
-										expression_list(25, 26, [
-											literal(25, 26, [
-												literal_integer(25, 26)
+									statement_expression(25, 26, [
+										call(25, 26, [
+											expression_list(25, 26, [
+												literal(25, 26, [
+													literal_integer(25, 26)
+												])
 											])
 										])
 									])

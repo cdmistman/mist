@@ -37,11 +37,13 @@ fn with_block() {
 					b_curly_l(2, 3),
 					WHITESPACE(3, 4),
 					statements(4, 6, [
-						call(4, 6, [
-							expression_list(4, 6, [
-								literal(4, 6, [
-									literal_integer(4, 6, [
-										WHITESPACE(5, 6)
+						statement_expression(4, 6, [
+							call(4, 6, [
+								expression_list(4, 6, [
+									literal(4, 6, [
+										literal_integer(4, 6, [
+											WHITESPACE(5, 6)
+										])
 									])
 								])
 							])

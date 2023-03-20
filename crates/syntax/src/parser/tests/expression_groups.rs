@@ -70,14 +70,16 @@ fn expressions_with_block() {
 							b_curly_l(8, 9),
 							WHITESPACE(9, 10),
 							statements(10, 12, [
-								call(10, 12, [
-									expression_list(10, 12, [
-										literal(10, 12, [
-											literal_integer(10, 12, [
-												WHITESPACE(11, 12)
-											])
+								statement_expression(10, 12, [
+									call(10, 12, [
+										expression_list(10, 12, [
+											literal(10, 12, [
+												literal_integer(10, 12, [
+													WHITESPACE(11, 12)
+												])
+											]),
 										]),
-									]),
+									])
 								]),
 							]),
 							b_curly_r(12, 13)

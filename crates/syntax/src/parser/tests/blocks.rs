@@ -25,10 +25,12 @@ fn just_expression() {
 			block(0, 3, [
 				b_curly_l(0, 1),
 				statements(1, 2, [
-					call(1, 2, [
-						expression_list(1, 2, [
-							literal(1, 2, [
-								literal_integer(1, 2)
+					statement_expression(1, 2, [
+						call(1, 2, [
+							expression_list(1, 2, [
+								literal(1, 2, [
+									literal_integer(1, 2)
+								])
 							])
 						])
 					])
