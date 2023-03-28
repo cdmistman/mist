@@ -8,7 +8,16 @@ impl Engine {
 		id
 	}
 
-	pub fn add_constraint(&mut self, left: TypeId, right: TypeId) {
-		self.constraints.push(Constraint { left, right });
+	pub fn instance(&mut self, type_: TypeId, span: SourceSpan) -> InstanceId {
+		let instance = Instance {
+			type_,
+			span,
+			constraints: Vec::new(),
+		};
+
+		let instance_id = InstanceId(self.instances.len() as u32);
+		self.instances.push(instance);
+
+		instance_id
 	}
 }

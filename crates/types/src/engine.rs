@@ -19,43 +19,45 @@ pub enum TypeCheckError {
 }
 
 #[derive(Debug, Diagnostic, Error)]
-#[error("can't constrain incompatible types {left} and {right}")]
+#[error("can't constrain incompatible types")]
 pub struct ConstraintError {
-	pub left:  String,
-	pub right: String,
+	pub left:  SourceSpan,
+	pub right: SourceSpan,
 }
 
 impl Engine {
-	pub fn type_check<B, H>(&self, symbols: &StringInterner<B, H>) -> Result<(), TypeCheckError>
+	pub fn type_check<B, H>(
+		&self,
+		symbols: &StringInterner<B, H>,
+	) -> Result<(), Vec<TypeCheckError>>
 	where
 		B: StringInternerBackend,
 		H: BuildHasher,
 	{
-		for Constraint {
-			left: TypeId(left),
-			right: TypeId(right),
-		} in &self.constraints
-		{
-			if left == right {
-				continue;
-			}
+		let failed_constraints = self
+			.instances
+			.iter()
+			.flat_map(|instance| {
+				instance
+					.constraints
+					.iter()
+					.filter_map(|constraint| match constraint {
+						Constraint::Expect { to_be_type, .. } if instance.type_ == *to_be_type => {
+							None
+						},
+						Constraint::Expect { to_be_type, span } => {
+							Some(TypeCheckError::Constraint(ConstraintError {
+								left:  instance.span,
+								right: *span,
+							}))
+						},
+					})
+			})
+			.collect::<Vec<_>>();
 
-			let left_type = &self.types[*left as usize];
-			let right_type = &self.types[*right as usize];
-
-			match (&left_type.kind, &right_type.kind) {
-				(TypeKind::Boolean, TypeKind::Boolean) | (TypeKind::Unit, TypeKind::Unit) => (),
-				(TypeKind::Integer { .. }, TypeKind::Integer { .. }) => {},
-				_ => {
-					return Err(ConstraintError {
-						left:  symbols.resolve(left_type.name).unwrap().to_string(),
-						right: symbols.resolve(right_type.name).unwrap().to_string(),
-					}
-					.into())
-				},
-			}
+		match failed_constraints.len() {
+			0 => Ok(()),
+			_ => Err(failed_constraints),
 		}
-
-		Ok(())
 	}
 }

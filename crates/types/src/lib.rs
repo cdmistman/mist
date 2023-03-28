@@ -1,12 +1,14 @@
 #![feature(trait_alias)]
 
 mod engine;
+mod instances;
 mod traits;
 mod types;
 
 use std::hash::BuildHasher;
 use std::hash::Hash;
 
+use miette::SourceSpan;
 use string_interner::symbol::SymbolUsize as Symbol;
 
 pub use self::engine::*;
@@ -20,12 +22,15 @@ pub struct Engine {
 	types:  Vec<Type>,
 	impls:  Vec<TraitImplementation>,
 
-	constraints: Vec<Constraint>,
+	instances: Vec<Instance>,
 }
 
-pub struct Constraint {
-	left:  TypeId,
-	right: TypeId,
+#[derive(Clone, Debug)]
+pub enum Constraint {
+	Expect {
+		to_be_type: TypeId,
+		span:       SourceSpan,
+	},
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]
@@ -71,4 +76,15 @@ pub enum TypeKind {
 pub enum Signedness {
 	Signed,
 	Unsigned,
+}
+
+#[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]
+pub struct InstanceId(u32);
+
+#[derive(Clone, Debug)]
+pub struct Instance {
+	type_: TypeId,
+	span:  SourceSpan,
+
+	constraints: Vec<Constraint>,
 }
