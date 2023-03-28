@@ -26,10 +26,7 @@ pub struct ConstraintError {
 }
 
 impl Engine {
-	pub fn type_check<B, H>(
-		&self,
-		symbols: &StringInterner<B, H>,
-	) -> Result<(), Vec<TypeCheckError>>
+	pub fn type_check<B, H>(&self) -> Result<(), Vec<TypeCheckError>>
 	where
 		B: StringInternerBackend,
 		H: BuildHasher,
@@ -45,7 +42,7 @@ impl Engine {
 						Constraint::Expect { to_be_type, .. } if instance.type_ == *to_be_type => {
 							None
 						},
-						Constraint::Expect { to_be_type, span } => {
+						Constraint::Expect { span, .. } => {
 							Some(TypeCheckError::Constraint(ConstraintError {
 								left:  instance.span,
 								right: *span,
