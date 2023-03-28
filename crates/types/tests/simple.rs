@@ -13,7 +13,7 @@ fn constrain_bool() {
 	let bool_instance = engine.instance(bool_type, SourceSpan::from(0..4));
 	engine.expect_type(bool_instance, bool_type, SourceSpan::from(0..4));
 
-	engine.type_check(&strings).unwrap();
+	engine.type_check().unwrap();
 }
 
 #[test]
@@ -30,5 +30,5 @@ fn constrain_bool_to_int() {
 	let bool_instance = engine.instance(bool_type, SourceSpan::from(0..4));
 	engine.expect_type(bool_instance, int_type, SourceSpan::from(0..4));
 
-	engine.type_check(&strings).unwrap();
+	engine.type_check().unwrap();
 }

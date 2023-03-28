@@ -26,11 +26,7 @@ pub struct ConstraintError {
 }
 
 impl Engine {
-	pub fn type_check<B, H>(&self) -> Result<(), Vec<TypeCheckError>>
-	where
-		B: StringInternerBackend,
-		H: BuildHasher,
-	{
+	pub fn type_check(&self) -> Result<(), Vec<TypeCheckError>> {
 		let failed_constraints = self
 			.instances
 			.iter()
